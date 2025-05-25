@@ -1,0 +1,10 @@
+# Godot 工程文件
+.godot/
+*.import
+
+# VSCode 配置
+.vscode/
+
+# 系统文件
+Thumbs.db
+.DS_Store

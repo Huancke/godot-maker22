@@ -1,0 +1,118 @@
+[gd_scene load_steps=8 format=3 uid="uid://bcgsles6vqx7d"]
+
+[ext_resource type="Texture2D" uid="uid://b4ie5amn72x8x" path="res://AssetBundle/Sprites/ForestBackground.png" id="1_86toh"]
+[ext_resource type="Script" uid="uid://bcb4dsgrvo4ry" path="res://tscn_scence/game.gd" id="1_xy0yg"]
+[ext_resource type="PackedScene" uid="uid://mbgdkglkvsei" path="res://tscn_scence/Player.tscn" id="2_yptwq"]
+[ext_resource type="AudioStream" uid="uid://ddcrsxtk100m8" path="res://AssetBundle/Audio/BGM.ogg" id="3_uo0i1"]
+[ext_resource type="PackedScene" uid="uid://jigwyhf3jgcp" path="res://tscn_scence/Enemy_Slimer.tscn" id="5_y8lse"]
+[ext_resource type="FontFile" uid="uid://b1v2ru3bjy46k" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="6_ktjii"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xy0yg"]
+
+[node name="World" type="Node2D" node_paths=PackedStringArray("spawn_timer", "_Score", "game_over_label")]
+y_sort_enabled = true
+script = ExtResource("1_xy0yg")
+Slime_Scene = ExtResource("5_y8lse")
+spawn_timer = NodePath("Timer")
+_Score = NodePath("CanvasLayer/Score")
+game_over_label = NodePath("CanvasLayer/Game Over")
+
+[node name="BGM_music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_uo0i1")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Background1" type="Sprite2D" parent="Background"]
+texture = ExtResource("1_86toh")
+metadata/_edit_lock_ = true
+
+[node name="Background2" type="Sprite2D" parent="Background"]
+position = Vector2(240, 0)
+texture = ExtResource("1_86toh")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(120, -2)
+zoom = Vector2(2.4, 2.3)
+metadata/_edit_lock_ = true
+
+[node name="Border" type="StaticBody2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Boder" type="CollisionShape2D" parent="Border"]
+position = Vector2(146, 38)
+rotation = -3.14159
+scale = Vector2(3, 0.5)
+shape = SubResource("WorldBoundaryShape2D_xy0yg")
+one_way_collision = true
+one_way_collision_margin = 0.5
+metadata/_edit_lock_ = true
+
+[node name="Boder2" type="CollisionShape2D" parent="Border"]
+position = Vector2(-121, 38)
+rotation = 1.5708
+scale = Vector2(3, 0.5)
+shape = SubResource("WorldBoundaryShape2D_xy0yg")
+one_way_collision = true
+one_way_collision_margin = 0.5
+metadata/_edit_lock_ = true
+
+[node name="Boder3" type="CollisionShape2D" parent="Border"]
+position = Vector2(360, 38)
+rotation = -1.5708
+scale = Vector2(3, 0.5)
+shape = SubResource("WorldBoundaryShape2D_xy0yg")
+one_way_collision = true
+one_way_collision_margin = 0.5
+metadata/_edit_lock_ = true
+
+[node name="Boder4" type="CollisionShape2D" parent="Border"]
+position = Vector2(116, 138)
+scale = Vector2(3, 0.5)
+shape = SubResource("WorldBoundaryShape2D_xy0yg")
+one_way_collision = true
+one_way_collision_margin = 0.5
+metadata/_edit_lock_ = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.6
+autostart = true
+
+[node name="Player" parent="." instance=ExtResource("2_yptwq")]
+z_index = 1
+position = Vector2(-26, 77)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+follow_viewport_enabled = true
+
+[node name="Score" type="Label" parent="CanvasLayer"]
+z_index = 1
+offset_left = -113.0
+offset_top = -139.0
+offset_right = -56.0
+offset_bottom = -102.0
+scale = Vector2(1.21317, 1.20106)
+theme_override_fonts/font = ExtResource("6_ktjii")
+
+[node name="Game Over" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 3.0
+offset_top = -7.0
+offset_right = 183.0
+offset_bottom = 23.0
+scale = Vector2(1.45146, 1.45083)
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/line_spacing = 20
+theme_override_constants/paragraph_spacing = 20
+theme_override_constants/shadow_offset_x = 20
+theme_override_constants/shadow_offset_y = 30
+theme_override_constants/outline_size = 10
+theme_override_constants/shadow_outline_size = 20
+theme_override_fonts/font = ExtResource("6_ktjii")
+theme_override_font_sizes/font_size = 30
+text = "GAME OVER..."
+horizontal_alignment = 1
+
+[connection signal="timeout" from="Timer" to="." method="_spawn"]
